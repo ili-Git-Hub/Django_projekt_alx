@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from devboard.models import Project
 
@@ -30,3 +30,21 @@ class ProjectListView(ListView, LoginRequiredMixin):
             .annotate(task_count=Count('tasks'))     #annotate() dopisuje pola, komentarz etc
             .order_by('-created_at')
         )
+
+class ProjectDetailView(DetailView, LoginRequiredMixin):
+    model = Project
+    template_name = 'devboard/project_detail.html'
+    context_object_name = 'project'
+
+    def get_queryset(self):
+        return Project.objects.filter(owner=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['tasks'] = (
+            self.object.tasks
+            .select_related('assignee')  # Pobierz dane o przypisanym użytkowniku
+            .order_by('-priority', 'due_date')
+            .count()    # Liczba zadań w projekcie
+        )
+        return ctx
