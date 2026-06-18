@@ -118,3 +118,7 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.author.username} @ {self.task.title[:40]}"   #geeeneruje tytul obciety do 40 znakow
+
+
+class Status:
+    pass

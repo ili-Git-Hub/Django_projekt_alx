@@ -1,0 +1,78 @@
+{% extends 'base.html' %} <!-- Usuń tę linię, jeśli nie używasz bazowego szablonu -->
+
+{% block content %}
+<div class="container mt-4">
+
+    <!-- ==================== TUTAJ JEST DODANY KOD aby wracał do listy projektow ==================== -->
+    <div class="mb-3">
+        <a href="/" class="btn btn-outline-secondary btn-sm">
+            &larr; Powrót do listy projektów
+        </a>
+    </div>
+    <!-- =============================================================== -->
+
+    <!-- Nagłówek projektu z przyciskiem dodawania po prawej stronie -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">{{ project.name|upper }}</h1>
+         <a href="{% url 'devboard:task-create' %}?project={{ project.pk }}" class="btn btn-primary"
+            <i class="bi bi-plus-circle"></i> Dodaj zadanie
+        </a>
+    </div>
+
+
+    <p class="text-muted">Opis:<br>{{ project.description|default:"Brak opisu" }}</p>
+
+    <!-- Statystyka: Ilość zadań -->
+    <div class="alert alert-info mb-4">
+        <strong>Łączna ilość zadań w tym projekcie:</strong> {{ tasks_count }}
+    </div>
+
+    <!-- Tabela z zadaniami -->
+    <h3 class="mb-3">Lista zadań</h3>
+    <table class="table table-striped table-hover border">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tytuł zadania</th>
+                <th scope="col">Priorytet</th>
+                <th scope="col">Przydzielone do</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <!-- Numeracja wierszy (automatyczny licznik Django) -->
+                    <th scope="row">{{ forloop.counter }}</th>
+
+                    <!-- Tytuł zadania -->
+                    <td>{{ task.title }}</td>
+
+                    <!-- Priorytet z dynamicznymi kolorami -->
+                    <td>
+                        <span class="badge
+                            {% if task.priority == '3' or task.priority == 3 %}bg-danger
+                            {% elif task.priority == '2' or task.priority == 2 %}bg-warning text-dark
+                            {% elif task.priority == '1' or task.priority == 1 %}bg-success
+                            {% else %}bg-secondary{% endif %}">
+                            {{ task.get_priority_display|default:task.priority }}
+                        </span>
+                    </td>
+
+                    <!-- Przydzielony użytkownik -->
+                    <td>
+                        {% if task.assignee %}
+                            {{ task.assignee.get_full_name|default:task.assignee.username }}
+                        {% else %}
+                            <span class="text-muted">Brak przypisania</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+
+
+

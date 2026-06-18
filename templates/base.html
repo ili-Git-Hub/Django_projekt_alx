@@ -28,8 +28,7 @@
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <form action="{% url 'login' %}" method="post">
-                                    {% csrf_token %}
+                                <form action="{% url 'login' %}" method="get">
                                     <button class="btn btn-link nav-link" type="submit">Zaloguj</button>
                                 </form>
                             </li>

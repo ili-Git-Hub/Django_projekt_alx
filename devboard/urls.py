@@ -8,5 +8,6 @@ app_name = "devboard"
 urlpatterns = [
 
     path("", views.ProjectListView.as_view(), name="lista-project"),
-    path("project/<int:pk>/", ProjectDetailView.as_view(), name="project-detail")
+    path("project/<int:pk>/", ProjectDetailView.as_view(), name="project-detail"),
+    path("zadania/nowe", views.TaskCreateView.as_view(), name="task-create"),
 ]

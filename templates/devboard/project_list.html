@@ -16,7 +16,7 @@
                 <h5 class="card-title">
                     <a href="{% url 'devboard:project-detail' p.pk %}">{{ p.name|upper }}</a>
                 </h5>
-                <p class="card-text">{{ p.description|truncatewords:3 }}</p>
+                <p class="card-text">{{ p.description|truncatewords:3|default:"-" }}</p>
                 <p class="card-text">{{ p.created_at|date:"d M Y" }}</p>
                 <p class="card-text">{{ p.task_count }} zadań</p>
             </div>
