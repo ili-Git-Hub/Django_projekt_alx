@@ -10,6 +10,8 @@ from kombu.asynchronous.aws.sqs import message
 from devboard.forms import TaskForm
 from devboard.models import Project, Task
 
+from django.utils.translation import gettext_lazy as _
+
 
 # funkcja indeksowa ktora zwraca w przegladarce odpowiedz (indeksowa jest tylko zaslepka na szybko
 # bo generalnie w html bedziemy pozniej to pisac)

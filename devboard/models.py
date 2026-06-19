@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 # ta klasa dziedziczy z modelu
 class Project(models.Model):
@@ -36,16 +37,16 @@ class Task(models.Model):
 
     #lista mozliwosci w statusie
     class Status(models.TextChoices):
-        TODO = "TODO", "Do zrobienia"   # todo w bazie a wyswietla sie do zrobienia
-        IN_PROGRESS = "IN_PROGRESS", "W trakcie"
-        DONE = "DONE", "Ukończone"
+        TODO = "TODO", _("Do zrobienia")
+        IN_PROGRESS = "IN_PROGRESS", _("W trakcie")
+        DONE = "DONE", _("Ukończone")
 
     class Priority(models.IntegerChoices):
-        LOW = 1, "Niski"
-        MEDIUM = 2, "Średni"
-        HIGH = 3, "Wysoki"
+        LOW = 1, _("Niski")
+        MEDIUM = 2, _("Średni")
+        HIGH = 3, _("Wysoki")
 
-    title = models.CharField(max_length=300, verbose_name="Tytuł")
+    title = models.CharField(max_length=300, verbose_name=_("Tytuł"))
     description = models.TextField(blank=True, verbose_name="Opis")
     #zadania beda korespondowaly z projektem:
     project = models.ForeignKey(

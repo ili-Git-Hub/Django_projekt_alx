@@ -16,6 +16,23 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        {% load i18n %}
+                        <li class="nav-item">
+                            <form action="{% url 'set_language' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.path }}">
+                                <select name="language" class="form-select form-select-sm d-inline-block" style="width: auto;" onchange="this.form.submit()">
+                                    {% get_current_language as LANGUAGE_CODE %}
+                                    {% get_available_languages as LANGUAGES %}
+                                    {% for lang_code, lang_name in LANGUAGES %}
+                                        <option value="{{ lang_code }}"
+                                            {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                                            {{ lang_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </li>
                         {% if user.is_authenticated %}
                             <li class="nav-item">
                                 <span class="nav-link">{{ user.username }}</span>
@@ -37,6 +54,7 @@
                 </div>
             </div>
         </nav>
+
 
         <!--     tu beda wstawiane strony, bo to bazowy widok tylko   -->
         <main class="container py-4">
