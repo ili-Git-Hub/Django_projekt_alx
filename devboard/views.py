@@ -64,7 +64,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     template_name = "devboard/project_create.html"
     form_class = ProjectForm
-    # success_url = reverse_lazy("devboard:lista-project")
+    # success_url = reverse_lazy("devboard:list-project")
 
     def get_success_url(self):
         return reverse_lazy("devboard:project-detail", args=[self.object.id])
@@ -79,7 +79,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     template_name = 'devboard/task_create.html'
     form_class = TaskForm       #to musi byc zdefiniowane w forms.py, bo inaczej nie bedzie wiedzialo jak wyglada formularz
     # success_url = reverse_lazy("devboard:task_list")
-    success_url = reverse_lazy("devboard:lista-projects")  #przekierowanie po dodaniu zadania na liste projektow
+    success_url = reverse_lazy("devboard:lista-project")  #przekierowanie po dodaniu zadania na liste projektow
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -118,7 +118,7 @@ class TaskDeleteView(OwnerQuerysetMixin, DeleteView):
     model = Task
     template_name = "devboard/task_confirm_delete.html"
     owner_field = "project__owner"  # Ustawiamy owner_field na pole powiązane z projektem
-    # success_url = reverse_lazy("devboard:lista-projects")  # przekierowanie po dodaniu zadania na liste projektow
+    # success_url = reverse_lazy("devboard:list-projects")  # przekierowanie po dodaniu zadania na liste projektow
 
     def get_success_url(self):
         return reverse_lazy("devboard:project-detail", args=[self.object.project.id])
