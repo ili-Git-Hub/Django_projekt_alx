@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -30,6 +31,10 @@ class Project(models.Model):
     # funkcja obliczajaca/zliczajaca zadnia
     def task_count(self) -> int:
         return self.tasks.count()
+
+    def get_absolute_url(self):
+        return reverse("devboard:project-detail", args=[self.pk])
+
 
 #dodajemy w 3cim tygodniu
 class TaskQuerySet(models.QuerySet):
@@ -110,6 +115,9 @@ class Task(models.Model):
         if self.due_date and self.status != self.Status.DONE:
             return self.due_date < timezone.now().date()
         return False
+
+    def get_absolute_url(self):
+        return reverse("devboard:task-detail", args=[self.pk])
 
 # klasa komentarzy - do zadania
 class Comment(models.Model):

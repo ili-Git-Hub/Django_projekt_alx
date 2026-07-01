@@ -43,8 +43,9 @@
                 <th scope="col">#</th>
                 <th scope="col">Tytuł zadania</th>
                 <th scope="col">Priorytet</th>
+                <th scope="col">Status</th>
                 <th scope="col">Przydzielone do</th>
-                <th scope="col" colspan="2">Akcje</th>
+                <th scope="col" colspan="3">Akcje</th>
             </tr>
         </thead>
         <tbody>
@@ -54,7 +55,11 @@
                     <th scope="row">{{ forloop.counter }}</th>
 
                     <!-- Tytuł zadania -->
-                    <td>{{ task.title }}</td>
+                    <td>
+                        <a href="{{ task.get_absolute_url }}" class="text-decoration-none">
+                            {{ task.title }}
+                        </a>
+                    </td>
 
                     <!-- Priorytet z dynamicznymi kolorami -->
                     <td>
@@ -64,6 +69,17 @@
                             {% elif task.priority == '1' or task.priority == 1 %}bg-success
                             {% else %}bg-secondary{% endif %}">
                             {{ task.get_priority_display|default:task.priority }}
+                        </span>
+                    </td>
+
+                    <!-- Status zadania -->
+                    <td>
+                        <span class="badge
+                            {% if task.status == 'DONE' %}bg-success
+                            {% elif task.status == 'IN_PROGRESS' %}bg-warning text-dark
+                            {% elif task.status == 'OPEN' %}bg-secondary
+                            {% else %}bg-secondary{% endif %}">
+                            {{ task.get_status_display|default:task.status }}
                         </span>
                     </td>
 
@@ -89,6 +105,13 @@
                         </a>
                     </td>
 
+                    <td>
+                        <form method="post" action="{% url 'devboard:task-status' task.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="DONE">
+                            <button type="submit" class="btn btn-sm btn-success">Zaznacz jako wykonany</button>
+                        </form>
+                    </td>
 
                 </tr>
             {% endfor %}

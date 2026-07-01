@@ -1,5 +1,6 @@
 from .base import *
 
+
 DEBUG = True
 ALLOWED_HOSTS = ['*']   #dopuszczamy w dev wszystkie testowe srodowiska, /w prod beda doment
 
