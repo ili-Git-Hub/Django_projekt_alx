@@ -31,6 +31,22 @@ class Project(models.Model):
     def task_count(self) -> int:
         return self.tasks.count()
 
+#dodajemy w 3cim tygodniu
+class TaskQuerySet(models.QuerySet):
+    def for_user(self, user):
+        return self.filter(assignee=user)
+    def active(self):
+        return self.exclude(status=self.model.Status.DONE)
+    def overdue(self):
+        # return self.filter(
+        #     status__in=[
+        #         self.model.Status.TODO,
+        #         self.model.Status.IN_PROGRESS
+        #     ]
+        # )
+        return self.active().exclude(due_date__isnull=True).filter(due_date__lt=timezone.now().date())
+        #return self.active()...
+        #mozna __startswith __in __lt __gt
 #klasa zadan
 class Task(models.Model):
     """Zadanie przypisane do projektu."""
@@ -46,6 +62,7 @@ class Task(models.Model):
         MEDIUM = 2, _("Średni")
         HIGH = 3, _("Wysoki")
 
+    objects = TaskQuerySet.as_manager()
     title = models.CharField(max_length=300, verbose_name=_("Tytuł"))
     description = models.TextField(blank=True, verbose_name="Opis")
     #zadania beda korespondowaly z projektem:

@@ -44,7 +44,7 @@ class ProjectAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = (
         "title", "project", "priority",
-        "assignee", "due_date", "status_badge"
+        "assignee", "due_date", "status_badge_admin"
     )
     list_filter = ("status", "priority", "project", "assignee")
     search_fields = ("title", "description")
@@ -61,7 +61,7 @@ class TaskAdmin(admin.ModelAdmin):
     # teraz robimy aby sie ststusy wyswietlały kolorami- to do, in progress, etc
     # do list_display wpisujemy ststus_badge i na poczatki importujemy html
     @admin.display(description="Status")
-    def status_badge(self, obj):
+    def status_badge_admin(self, obj):
         colors = {
             "TODO": "#6c757d",
             "IN_PROGRESS": "#0d6efd",

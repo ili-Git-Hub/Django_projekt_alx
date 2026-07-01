@@ -1,7 +1,15 @@
 from django import forms
 
-from devboard.models import Task
+from devboard.models import Project, Task
 
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ["name", "description"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": "5"}),
+        }
 
 class TaskForm(forms.ModelForm):
     class Meta:

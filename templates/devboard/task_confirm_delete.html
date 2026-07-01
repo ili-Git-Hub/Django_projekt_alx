@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}<div class="container mt-4">  <div class="mb-3">    <a href="{% url 'devboard:project-detail' pk=task.project.pk %}" class="btn btn-outline-secondary btn-sm">      &larr; Powrót do projektu    </a>  </div>
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object.title }}"?</p>
+    {{ form }}
+    <input type="submit" value="Confirm">
+</form>
+</div>{% endblock %}
